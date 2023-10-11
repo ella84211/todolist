@@ -1,0 +1,261 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div>
+        <script>
+            window.onload = function() {
+                let link = document.getElementById('link');
+                let task = document.getElementById('task');
+                let title = document.getElementById('title');
+                title.addEventListener('keydown', function(g) {
+                    if (g.key === 'Enter') {
+                        g.preventDefault();
+                        document.getElementById('titlenotes').focus();
+                    }
+                });
+                link.addEventListener('keydown', function(f) {
+                    if (f.key === 'Enter') {
+                        f.preventDefault();
+                        document.getElementById('title').focus();
+                    }
+                });
+                task.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        console.log('successful');
+                        e.preventDefault();
+                        document.getElementById('tasknotes').focus();
+                    }
+                });
+            }
+        </script>
+        <form method="post">
+            <input id="task" name="task" placeholder="Task" autocomplete="off">
+            <input id="tasknotes" name="tasknotes" placeholder="Notes" autocomplete="off">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+    <div>
+        <form method="post">
+            <input id="link" name="link" placeholder="Link" autocomplete="off">
+            <input id="title" name="title" placeholder="Title" autocomplete="off">
+            <input id="titlenotes" name="titlenotes" placeholder="Notes" autocomplete="off">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+    <div>
+        <h1>To Do:</h1>
+    </div>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th class="select"></th>
+                <th>Tasks</th>
+                <th>Notes</th>
+                <th class="button"></th>
+                <th class="button"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in urgenttasks %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('{{ urgenttasks[loop.index0] }}').style.backgroundColor = '{{ urgenttaskcolors[loop.index0] }}';
+                        let colors = document.getElementsByClassName('{{ urgenttaskcolors[loop.index0] }}');
+                        for (let i = 0; i < colors.length; i++) {
+                            colors[i].addEventListener('change', function() {
+                                this.form.submit();
+                            });
+                        }
+                    });
+                </script>
+                <tr id="{{ urgenttasks[loop.index0] }}">
+                    <td>
+                        <form action="/color" method="post">
+                            <input type="hidden" name="urgenttasknamecolor" value="{{ urgenttasks[loop.index0] }}">
+                            <select class="{{ urgenttaskcolors[loop.index0] }}" name="color">
+                                <option value="" disabled selected>Color</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                                <option value="pink">Pink</option>
+                                <option value="saddlebrown">Brown</option>
+                                <option value="grey">Grey</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td>{{ urgenttasks[loop.index0] }}</td>
+                    <td>{{ urgenttasknotes[loop.index0] }}</td>
+                    <td>
+                        <form action="/noturgent" method="post">
+                            <input type="hidden" name="urgenttaskname" value="{{ urgenttasks[loop.index0] }}">
+                            <button type="submit" id="button" class="urgency">&starf;</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete" method="post">
+                            <input type="hidden" name="urgenttaskname" value="{{ urgenttasks[loop.index0] }}">
+                            <button type="submit" id="done">Done!</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in urgenttitles %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('{{ urgenttitles[loop.index0] }}').style.backgroundColor = '{{ urgenttitlecolors[loop.index0] }}';
+                        let colors = document.getElementsByClassName('urgenttitlecolors');
+                        for (let i = 0; i < colors.length; i++) {
+                            colors[i].addEventListener('change', function() {
+                                this.form.submit();
+                            });
+                        }
+                    });
+                </script>
+                <tr id="{{ urgenttitles[loop.index0] }}">
+                    <td>
+                        <form action="/color" method="post">
+                            <input type="hidden" name="urgenttitlenamecolor" value="{{ urgenttitles[loop.index0] }}">
+                            <select class="urgenttitlecolors" name="color">
+                                <option value="" disabled selected>Color</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                                <option value="pink">Pink</option>
+                                <option value="saddlebrown">Brown</option>
+                                <option value="grey">Grey</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </form>
+                    <td>
+                        <a href="https://{{ urgentlinks[loop.index0] }}" target="_blank">{{ urgenttitles[loop.index0] }}</a>
+                    </td>
+                    <td>{{ urgenttitlenotes[loop.index0] }}</td>
+                    <td>
+                        <form action="/noturgent" method="post">
+                            <input type="hidden" name="urgenttitlename" value="{{ urgenttitles[loop.index0] }}">
+                            <button type="submit" id="done" class="urgency">&starf;</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete" method="post">
+                            <input type="hidden" name="urgenttitlename" value="{{ urgenttitles[loop.index0] }}">
+                            <button type="submit" id="done">Done!</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in tasks %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('{{ tasks[loop.index0] }}').style.backgroundColor = '{{ taskcolors[loop.index0] }}';
+                        let colors = document.getElementsByClassName('taskcolors');
+                        for (let i = 0; i < colors.length; i++) {
+                            colors[i].addEventListener('change', function() {
+                                this.form.submit();
+                            });
+                        }
+                    });
+                </script>
+                <tr id="{{ tasks[loop.index0] }}">
+                    <td>
+                        <form action="/color" method="post">
+                            <input type="hidden" name="tasknamecolor" value="{{ tasks[loop.index0] }}">
+                            <select class="taskcolors" name="color">
+                                <option value="" disabled selected>Color</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                                <option value="pink">Pink</option>
+                                <option value="saddlebrown">Brown</option>
+                                <option value="grey">Grey</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </form>
+                    <td>{{ tasks[loop.index0] }}</td>
+                    <td>{{ tasknotes[loop.index0] }}</td>
+                    <td>
+                        <form action="/urgent" method="post">
+                            <input type="hidden" name="taskname" value="{{ tasks[loop.index0] }}">
+                            <button type="submit" id="done" class="urgency">&star;</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete" method="post">
+                            <input type="hidden" name="taskname" value="{{ tasks[loop.index0] }}">
+                            <button type="submit" id="done">Done!</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in titles %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.getElementById('{{ titles[loop.index0] }}').style.backgroundColor = '{{ titlecolors[loop.index0] }}';
+                        let colors = document.getElementsByClassName('titlecolors');
+                        for (let i = 0; i < colors.length; i++) {
+                            colors[i].addEventListener('change', function() {
+                                this.form.submit();
+                            });
+                        }
+                    });
+                </script>
+                <tr id="{{ titles[loop.index0] }}">
+                    <td>
+                        <form action="/color" method="post">
+                            <input type="hidden" name="titlenamecolor" value="{{ titles[loop.index0] }}">
+                            <select class="titlecolors" name="color">
+                                <option value="" disabled selected>Color</option>
+                                <option value="red">Red</option>
+                                <option value="orange">Orange</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="green">Green</option>
+                                <option value="blue">Blue</option>
+                                <option value="purple">Purple</option>
+                                <option value="pink">Pink</option>
+                                <option value="saddlebrown">Brown</option>
+                                <option value="grey">Grey</option>
+                                <option value="black">Black</option>
+                            </select>
+                        </form>
+                    <td>
+                        <a href="https://{{ links[loop.index0] }}" target="_blank">{{ titles[loop.index0] }}</a>
+                    </td>
+                    <td>{{ titlenotes[loop.index0] }}</td>
+                    <td>
+                        <form action="/urgent" method="post">
+                            <input type="hidden" name="titlename" value="{{ titles[loop.index0] }}">
+                            <button type="submit" id="done" class="urgency">&star;</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete" method="post">
+                            <input type="hidden" name="titlename" value="{{ titles[loop.index0] }}">
+                            <button type="submit" id="done">Done!</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <a href="/history">History</a>
+    </div>
+    <div>
+        <a href="/logout">Log out</a>
+    </div>
+    <div>
+        <a href="/deleteaccount">Delete account</a>
+    </div>
+{% endblock %}

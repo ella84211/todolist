@@ -1,0 +1,46 @@
+body {
+    margin-top: 50px;
+    text-align: center;
+}
+
+div {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+input {
+    height: 25px;
+    font-size: 20px;
+}
+
+table {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    font-size: 25px;
+    width: 100%;
+}
+
+th {
+    font-size: 30px;
+}
+
+td {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+select, button {
+    height: 30px;
+    font-size: 20px;
+}
+
+.button, .select {
+    width: 150px;
+}

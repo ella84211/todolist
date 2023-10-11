@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div>
+        <h1>To Do List</h1>
+    </div>
+    <form action="/register" method="post">
+        <div>
+            <input name="username" placeholder="Username" type="text" required="required" autofocus="autofocus">
+        </div>
+        <div>
+            <input  name="password" placeholder="Password" type="password" required="required">
+        </div>
+        <div>
+            <input name="confirmation" placeholder="Confirm password" type="password" required="reqired">
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <div>
+        <a href="/login">Log In</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div>
+        <h1>History</h1>
+    </div>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Tasks</th>
+                <th>Notes</th>
+                <th class="button"></th>
+                <th class="button"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in tasks %}
+                <tr>
+                    <td>{{ tasks[loop.index0] }}</td>
+                    <td>{{ tasknotes[loop.index0] }}</td>
+                    <td>
+                        <form action="/add" method="post">
+                            <input type="hidden" name="tasknameadd" value="{{ tasks[loop.index0] }}">
+                            <button type="submit" id="done">Add</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/remove" method="post">
+                            <input type="hidden" name="tasknameremove" value="{{ tasks[loop.index0] }}">
+                            <button type="submit" id="done">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for row in titles %}
+                <tr>
+                    <td>
+                        <a href="https://{{ links[loop.index0] }}" target="_blank">{{ titles[loop.index0] }}</a>
+                    </td>
+                    <td>{{ titlenotes[loop.index0] }}</td>
+                    <td>
+                        <form action="/add" method="post">
+                            <input type="hidden" name="titlenameadd" value="{{ titles[loop.index0] }}">
+                            <button type="submit" id="done">Add</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/remove" method="post">
+                            <input type="hidden" name="titlenameremove" value="{{ titles[loop.index0] }}">
+                            <button type="submit" id="done">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <a href="/">List</a>
+    </div>
+    <div>
+        <a href="/logout">Log out</a>
+    </div>
+    <div>
+        <a href="/deleteaccount">Delete account</a>
+    </div>
+{% endblock %}
